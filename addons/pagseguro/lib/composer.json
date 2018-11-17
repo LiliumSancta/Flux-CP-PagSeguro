@@ -1,0 +1,25 @@
+{
+  "name": "pagseguro/pagseguro-php-sdk",
+  "description": "Biblioteca de integração com o PagSeguro",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "PagSeguro"
+    }
+  ],
+  "require": {
+    "php": "7.1.19",
+    "ext-curl": "*",
+    "lib-curl": "*",
+    "lib-openssl": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "PagSeguro\\": "source/",
+      "PagSeguro\\Addon\\": "addon/"
+    }
+  }
+}
