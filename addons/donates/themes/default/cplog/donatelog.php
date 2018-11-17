@@ -9,6 +9,11 @@
 		</p>
 		
 		<p>
+		<label for="payment_code">Código da Transação:</label>
+		<input type="text" name="payment_code" id="payment_code" value="<?php echo htmlspecialchars($params->get('payment_code')) ?>" />
+		</p>
+		
+		<p>
 		<label for="id">Referência da Transação:</label>
 		<input type="text" name="id" id="id" value="<?php echo htmlspecialchars($params->get('payment_id')) ?>" />
 		</p>
@@ -30,7 +35,7 @@
 
 		<p>
 		<label for="payment">Valor: R$</label>
-		<input type="text" name="payment" id="payment" value="<?php echo htmlspecialchars($params->get('payment')) ?>" /> ,00
+		<input type="text" name="payment" id="payment" value="<?php echo htmlspecialchars($params->get('payment')) ?>" />
 		</p>
 
 		<p>
@@ -46,6 +51,7 @@
 		<input type="submit" value="Procurar" />
 		<input type="button" value="Resetar" onclick="reload()" />
 </form>
+
 <?php echo $paginator->infoText() ?>
 <table class="horizontal-table">
 	<tr>
@@ -75,7 +81,7 @@
 		echo htmlspecialchars($status[$transaction->payment_status]) ?></td>
 
 		<td><?php echo $this->formatDateTime($transaction->payment_date) ?></td>
-		<td>R$ <?php echo htmlspecialchars($transaction->payment) ?> ,00</td>
+		<td>R$ <?php echo htmlspecialchars($this->formatCurrency($transaction->payment)) ?></td>
 	</tr>
 	<?php endforeach ?>
 </table>

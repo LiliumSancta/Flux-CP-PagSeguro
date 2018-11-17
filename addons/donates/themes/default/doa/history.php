@@ -16,12 +16,12 @@ echo ($pendenteTotal > 1)?(' transações pendentes'):(' transação pendente');
 		<td><?php echo $this->formatDateTime($pendente->payment_date) ?></td>
 		<td><?php echo htmlspecialchars($pendente->email) ?></td>
 		<td><?php echo htmlspecialchars('Recebida por '.$pendente->payment_type) ?></td>
-		<td>R$<?php echo number_format($pendente->payment) ?>,00</td>
+		<td>R$ <?php echo htmlspecialchars($this->formatCurrency($pendente->payment)) ?></td>
 	</tr>
 	<tr>
-		<td colspan="6">
+		<td colspan="4">
 			↳ Sua doação está em status de <?php $status = Flux::config('PagSeguroStatus')->toArray();
-			echo htmlspecialchars($status[$pendente->pagseguro_status]) ?> no PagSeguro.
+			echo htmlspecialchars($status[$pendente->payment_status_pagseguro]) ?> no PagSeguro.
 		</td>
 	</tr>
 	<?php endforeach ?>
@@ -46,13 +46,7 @@ echo ($aprovadaTotal > 1)?(' transações aprovadas'):(' transação aprovada');
 		<td><?php echo $this->formatDateTime($aprovada->payment_date) ?></td>
 		<td><?php echo htmlspecialchars($aprovada->email) ?></td>
 		<td><?php echo htmlspecialchars('Recebida por '.$aprovada->payment_type) ?></td>
-		<td>R$<?php echo number_format($aprovada->payment) ?>,00</td>
-	</tr>
-	<tr>
-		<td colspan="6">
-			↳ Sua doação está 
-			<?php echo htmlspecialchars($status[$aprovada->pagseguro_status]) ?> no PagSeguro.
-		</td>
+		<td>R$<?php echo htmlspecialchars($this->formatCurrency($aprovada->payment)) ?></td>
 	</tr>
 	<?php endforeach ?>
 </table>
@@ -76,7 +70,7 @@ echo ($recusadaTotal > 1)?(' transações falhas'):(' transação falha'); ?>.</
 		<td><?php echo $this->formatDateTime($recusada->payment_date) ?></td>
 		<td><?php echo htmlspecialchars($recusada->email) ?></td>
 		<td><?php echo htmlspecialchars('Recebida por '.$recusada->payment_type) ?></td>
-		<td>R$<?php echo number_format($recusada->payment) ?>,00</td>
+		<td>R$<?php echo htmlspecialchars($this->formatCurrency($recusada->payment)) ?></td>
 	</tr>
 	<?php endforeach ?>
 </table>

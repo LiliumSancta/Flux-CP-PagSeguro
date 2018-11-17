@@ -27,6 +27,7 @@ class PagSeguroXmlParser
 	public function __construct($xml)
 	{
 		$parser = xml_parser_create();
+		$xml = utf8_decode($xml);
 		if (!xml_parse($parser, $xml)) {
 			throw new Exception("PagSeguroLibrary XML parsing error: (" . xml_get_error_code($parser) . ") " . xml_error_string(xml_get_error_code($parser)));
 		} else {

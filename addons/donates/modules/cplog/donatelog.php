@@ -2,30 +2,33 @@
 if (!defined('FLUX_ROOT')) exit;
 
 $this->loginRequired();
-$title = 'Transações do PagSeguro';
+$title = 'TransaÃ§Ãµes do PagSeguro';
 $donateTable = Flux::config('FluxTables.DonateTable');
-$status = Flux::config('PagSeguroStatus')->toArray();
+
+$donateId      = (int)$params->get('id');
+$donateCode    = trim($params->get('payment_code'));
+$donateRef     = trim($params->get('payment_id'));
+$donateAcc     = (int)$params->get('account_id');
+$donateUser    = trim($params->get('userid'));
+$donateIp      = trim($params->get('payment_ip'));
+$donateDateMin = $params->get('dateMin');
+$donateDateMax = $params->get('dateMax');
+$donateVal     = str_replace(',','.',$params->get('payment'));
+$donateEmail   = $params->get('email');
+$donateStatus  = $params->get('payment_status');
+$status = Flux::config('PaymentStatus')->toArray();
 
 $sqlpartial    = "WHERE 1=1 ";
 $bind          = array();
 
-$donateId     = (int)$params->get('id');
-$donateRef    = trim($params->get('payment_id'));
-$donateAcc    = (int)$params->get('account_id');
-$donateUser   = trim($params->get('userid'));
-$donateIp     = trim($params->get('payment_ip'));
-$donateVal    = (int)$params->get('payment');
-$donateEmail  = $params->get('email');
-$donateStatus = $params->get('payment_status');
-
-for ($i = 0;$i <= 4; $i++){
-	if ($status[$i] == $donateStatus)
-		$donateStatus = $status[$i];
-}
-
 if ($donateId) {
 	$sqlpartial .= 'AND id = ? ';
 	$bind[]      = $donateId;
+}
+
+if ($donateCode) {
+	$sqlpartial .= 'AND payment_code = ? ';
+	$bind[]      = $donateCode;
 }
 
 if ($donateRef) {
@@ -58,9 +61,15 @@ if ($donateEmail) {
 	$bind[]      = $donateEmail;
 }
 
+if ($donateDateMin && $donateDateMax) {
+	$sqlpartial .= 'AND payment_date >= ? AND payment_date <= ? ';
+	$bind[]      = $donateDateMin;
+	$bind[]      = $donateDateMax;
+}
+
 if ($donateStatus) {
 	$sqlpartial .= 'AND payment_status = ? ';
-	$bind[]      = $donateStatus;
+	$bind[]      =  array_search($donateStatus ,$status);
 }
 
 $sql = "SELECT COUNT(id) AS total FROM {$server->loginDatabase}.$donateTable $sqlpartial";

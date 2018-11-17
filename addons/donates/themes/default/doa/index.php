@@ -7,6 +7,9 @@
 	
 	<p>Ao fazer uma doação, você está ajudando nos custos de <em>execução</em> desde servidor e na <em>manutenção</em> do mesmo. Em troca, você é recompensado com <span class="keyword"><?php echo Flux::config('PagSeguroCoin') ?></span> que você pode utilizar para comprar itens
 	<?php echo (Flux::config('PagSeguroFlux') ? 'da nossa <a href="'. $this->url('purchase').'">loja</a> de' : 'em nosso NPC de') ?> <?php echo Flux::config('PagSeguroCoin') ?> .</p>
+	<?php if (Flux::config('Promotion')):?>
+		<h3><span class="keyword"> Aproveite estamos com uma promoção onde <?php echo ((Flux::config('InitPromo') > 0) ? 'a partir de '.$this->formatCurrency(Flux::config('InitPromo')).' R$ ' : ' ').'você recebe mais '. Flux::config('Promotion').'% de créditos nas doações.' ?></span></h3>
+	<?php endif ?>
 	<h3>Você está pronto para doar?</h3>
 	<p>Aqui as doações são recebidas através do PagSeguro, onde você pode pagar de diversas maneiras.</p>
 		

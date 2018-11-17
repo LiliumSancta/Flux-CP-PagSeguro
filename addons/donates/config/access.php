@@ -10,22 +10,24 @@
  [          =         +-+-+-+-+-+-+-+         =          ]
  [===========                                 ===========]
  [=======================================================]
- [      Integração API PagSeguro Versão atual 1.4        ]
+ [      IntegraÃ§Ã£o API PagSeguro VersÃ£o atual 2.0        ]
  [=======================================================]
  [                      Changelog:                       ]
  [1.0 Addon Criado.                                      ]
- [1.2 Correção em erro de português e rate.              ]
- [1.4 Inseridas novas configurações.                     ]
+ [1.2 CorreÃ§Ã£o em erro de portuguÃªs e rate.              ]
+ [1.4 Inseridas novas configuraÃ§Ãµes.                     ]
+ [1.6 Corrigido erro com valores.                        ]
+ [1.8 Compatibilidade com Hercules adicionada.           ]
+ [2.0 Addon totalmente reformulado, diversos erros       ]
+ [    corrigidos e novas funÃ§Ãµes adicionadas.            ]
  [-------------------------------------------------------]
- [     NÃO REDISTRIBUA MEU TRABALHO SEM AUTORIZAÇÃO      ]
+ [     N?O REDISTRIBUA MEU TRABALHO SEM AUTORIZAÃ‡ÃƒO      ]
  [=======================================================]
  [                       Suporte:                        ]
  [                                                       ]
  [ Qualquer erro encontrado pode ser reportado a mim em  ]
  [ meu email pessoal inu-kai@limao.com.br ou diretamente ]
- [ no tópico referente no brAthena.                      ]
- [ OBS: Apenas usuários que tiverem adquirido o sistema  ]
- [ no brAthena receberão suporte.                        ]
+ [ no tÃ³pico de download.                                ]
  [=======================================================]
  [ http://www.brathena.org/forum/index.php?showuser=124  ]
  [=======================================================]
@@ -44,8 +46,10 @@ return array(
 	
 	'modules' => array(
 		'cplog' => array(
-            'donatelog' 	=> AccountLevel::ADMIN,
-            'donateview' 	=> AccountLevel::ADMIN,
+            'donatelog' 	  => AccountLevel::ADMIN,
+            'donateview' 	  => AccountLevel::ADMIN,
+			'donatestatistic' => AccountLevel::ADMIN,
+			'sobre' 	      => AccountLevel::ADMIN,
 		),
 	),
 )
