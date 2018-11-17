@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS `cp_donate` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) NOT NULL,
+  `userid` varchar(23) NOT NULL,
+  `email` varchar(39) NOT NULL,
+  `payment_date` datetime NOT NULL,
+  `payment_id` varchar(50) NOT NULL,
+  `payment` int(11) NOT NULL,
+  `payment_ip` varchar(35) NOT NULL,
+  `payment_type` varchar(23) NOT NULL,
+  `payment_status` varchar(23) NOT NULL,
+  `pagseguro_code` varchar(50) NOT NULL,
+  `pagseguro_status` int(11) NOT NULL,
+  `pagseguro_id` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+) ENGINE=MyISAM
