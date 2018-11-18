@@ -83,11 +83,7 @@ class Payment extends Database{
 	}
 
 	protected function setCredits(){
-		$this->credits = floor(
-			($this->getPaymentVal() >= $this->getInitPromo()) ?
-			($this->getPaymentVal() + ($this->getPaymentPromo()*$this->getPaymentVal())/100) :
-			($this->getPaymentVal() / $this->getRate())
-		);
+		$this->credits = floor(($this->getPaymentVal() >= $this->getInitPromo() ? ($this->getPaymentVal() + ($this->getPaymentPromo()*$this->getPaymentVal())/100) : $this->getPaymentVal()) / $this->getRate());
 	}
 
 	public function setPaymentUpdate(){

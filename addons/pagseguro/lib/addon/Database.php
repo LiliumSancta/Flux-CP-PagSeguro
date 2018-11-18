@@ -192,7 +192,7 @@ class Database{
 	}
 
 	public function setCashPointRathena(){
-		$sql  = "INSERT INTO {$this->getServer()->charMapDatabase}.`global_acc_reg_num` (`account_id`, `key`, `index`, `value`) ";
+		$sql  = "INSERT INTO {$this->getServer()->charMapDatabase}.`acc_reg_num` (`account_id`, `key`, `index`, `value`) ";
 		$sql .= "VALUES (?,?,0,?) ON DUPLICATE KEY UPDATE value = value + ?";
 		$sth  = $this->getServer()->connection->getStatement($sql);
 		$sth->execute(array($this->getPaymentAcc(), $this->getPaymentVar(), $this->getCredits(), $this->getCredits()));
