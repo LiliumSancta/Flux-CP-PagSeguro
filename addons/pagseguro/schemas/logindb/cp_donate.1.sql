@@ -1,3 +1,4 @@
+/*
 ALTER TABLE `cp_donate`
   DROP COLUMN `payment_notification_code`,
   DROP COLUMN `payment_status`,
@@ -11,6 +12,7 @@ ALTER TABLE `cp_donate`
   MODIFY `payment_type` varchar(23) NOT NULL DEFAULT 'PagSeguro',
   MODIFY `payment_code` varchar(50) NULL,
   CHANGE `payment_status_pagseguro` `payment_status` tinyint(3) NOT NULL DEFAULT '0';
+*/
 
 CREATE TABLE IF NOT EXISTS `cp_donate` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

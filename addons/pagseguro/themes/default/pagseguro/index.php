@@ -1,6 +1,6 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
 <h2>Doação PagSeguro</h2>
-<script>
+<script type="text/javascript">
 	$(function () {
 		$('#formPagseguro').on('submit', function (e) {
 			$('#buttonPagseguro').attr('disabled', true);
