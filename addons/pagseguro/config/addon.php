@@ -54,6 +54,8 @@ return array(
 
 	'TokenPagseguro' 		=> 'SEU TOKEN PAGSEGURO', // Seu token do PagSeguro.
 
+	'TokenPagseguroSandbox' => 'SEU TOKEN DO SANDBOX', // Seu token do sandbox PagSeguro.
+
 	'Promotion' 			=> 0, // Adicione aqui o bônus de porcentagem que deseja nas doações, exemplo caso insira 100 as doações receberão o dobro em Créditos.
 
 	'InitPromo' 			=> 0, // Adicione aqui em R$ a partir de qual valor em doação o doador passa a receber o bônus das promoções.
@@ -78,7 +80,7 @@ return array(
 
 	'PagSeguroAddress' 		=> 'false', // Requisitar o endereço do comprador? (Padrão false) OBS: precisa ser passado como string '-' vai entender.
 
-	'PagSeguroSandBox' 		=> false, // Usar o sandbox do Pagseguro ? (Padrão false). Acredite em mim integrei só por fazer isso nunca funcionou comigo, mas ta ai caso você precise/consiga usar...
+	'PagSeguroEnviroment' 	=> 'production', // Usar o sandbox do Pagseguro ? (Padrão production) production ou sandbox.
 
 	'PagSeguroSandBoxUrl' 	=> 'https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js', // URL do SandBox do PagSeguro.
 

@@ -30,23 +30,26 @@ $database->setUpdateParams($paymentTable, $banTable, $paymentRef);
 // Pegando dados da transação armazendos no banco de dados.
 $payment = $database->getPayment();
 
-// Credenciais, não quero setar em um xml altamente inseguro.
-$credentials = new \PagSeguro\Configuration\Configure();
+// Configurações, não quero setar em um xml altamente inseguro.
+$config = new \PagSeguro\Configuration\Configure();
+
+// Setando enviroment do pagseguro.
+$config->setEnvironment(Flux::config('PagSeguroEnviroment'));
 
 // Setando credenciais do pagseguro.
-$credentials->setAccountCredentials(Flux::config('EmailPagSeguro'), Flux::config('TokenPagseguro'));
+$config->setAccountCredentials(Flux::config('EmailPagSeguro'), Flux::config('PagSeguroEnviroment') == 'sandbox' ? Flux::config('TokenPagseguroSandbox') : Flux::config('TokenPagseguro'));
 
 if ($payment->payment_code){
 	
 	// Pegando dados da transação através do código de transação armazenado na tabela.
-	$transactionPagseguro = \PagSeguro\Services\Transactions\Search\Code::search($credentials->getAccountCredentials(), $payment->payment_code);
+	$transactionPagseguro = \PagSeguro\Services\Transactions\Search\Code::search($config->getAccountCredentials(), $payment->payment_code);
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if (count($_POST) && !empty($_POST['transactionCode'])){
 
 		// Pegando dados da transação através do código de transação recebido no POST.
-		$transactionPagseguro = \PagSeguro\Services\Transactions\Search\Code::search($credentials->getAccountCredentials(), $_POST['transactionCode']);
+		$transactionPagseguro = \PagSeguro\Services\Transactions\Search\Code::search($config->getAccountCredentials(), $_POST['transactionCode']);
 
 		// Status no banco de dados igual ao recebido do PagSeguro, então GG paramos por aqui!
 		if ($transactionPagseguro->getStatus() != $payment->payment_status){

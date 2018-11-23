@@ -1,4 +1,5 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <h2>Doação PagSeguro</h2>
 <script type="text/javascript">
 	$(function () {
@@ -19,7 +20,7 @@
 						isOpenLightbox = PagSeguroLightbox(data.code,{
 							success: function(transactionCode){
 								// Isto aqui não foi muito legal =P.
-								location.href="<?php echo $this->url($params->get('module'), 'return', array('transactionCode' => '')) ?>"+transactionCode;
+								location.href="<?php echo $this->url($params->get('module'), 'return') ?>";
 							},
 							abort: function(){
 								$('.red').empty();
@@ -39,7 +40,7 @@
 <?php if (!Flux::config('PagSeguroLock') || $session->account->group_id > 20): ?>
 
 	<p class="red" style="display: none"></p>
-	<p>Ao fazer uma doação, você está ajudando nos custos de <em>execução</em> desde servidor e na <em>manutenção</em> do mesmo. Em troca, você é recompensado com <span class="keyword"><?php echo Flux::config('PagSeguroCoin') ?></span> que você pode utilizar para comprar itens
+	<p>Ao fazer uma doação, você está ajudando nos custos de <em>execução</em> deste servidor e na <em>manutenção</em> do mesmo. Em troca, você é recompensado com <span class="keyword"><?php echo Flux::config('PagSeguroCoin') ?></span> que você pode utilizar para comprar itens
 	<?php echo (Flux::config('PagSeguroFlux') ? 'da nossa <a href="'. $this->url('purchase').'">loja</a> de' : 'em nosso NPC de') ?> <?php echo Flux::config('PagSeguroCoin') ?> .</p>
 	<?php if (Flux::config('Promotion')):?>
 		<h3><span class="keyword"> Aproveite estamos com uma promoção onde <?php echo ((Flux::config('InitPromo') > 0) ? 'a partir de R$ '.$this->formatCurrency(Flux::config('InitPromo')).' ' : ' ').'você recebe mais '. Flux::config('Promotion').'% de créditos nas doações.' ?></span></h3>

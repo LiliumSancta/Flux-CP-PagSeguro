@@ -10,7 +10,7 @@ require_once Flux::config('PagSeguroLib');
 use \PagSeguro\Addon\Payment as DB;
 
 // Queria unificar as páginas de retorno e notificações reduzindo ao maximo código repetido e deu nisso ai =P.
-if (\PagSeguro\Helpers\Xhr::hasGet() || \PagSeguro\Helpers\Xhr::hasPost()){
+if (!empty($_POST) && \PagSeguro\Helpers\Xhr::hasPost()){
 
 	$paymentTable = Flux::config('FluxTables.PaymentTable');
 	$banTable     = Flux::config('FluxTables.AccountBanTable');
@@ -21,26 +21,18 @@ if (\PagSeguro\Helpers\Xhr::hasGet() || \PagSeguro\Helpers\Xhr::hasPost()){
 	$emulator     = Flux::config('emulator');
 	$rate         = Flux::config('rate');
 
-	// Credenciais, não quero setar em um xml altamente inseguro.
-	$credentials  = new \PagSeguro\Configuration\Configure();
+	// Configurações, não quero setar em um xml altamente inseguro.
+	$config  = new \PagSeguro\Configuration\Configure();
+
+	// Setando enviroment do pagseguro.
+	$config->setEnvironment(Flux::config('PagSeguroEnviroment'));
 
 	// Setando credenciais do pagseguro.
-   	$credentials->setAccountCredentials(Flux::config('EmailPagSeguro'), Flux::config('TokenPagseguro'));
+   	$config->setAccountCredentials(Flux::config('EmailPagSeguro'), Flux::config('PagSeguroEnviroment') == 'sandbox' ? Flux::config('TokenPagseguroSandbox') : Flux::config('TokenPagseguro'));
 
-   	// Queria unificar as páginas de retorno e notificações reduzindo ao maximo código repetido e deu nisso ai =P.
-	if (!empty($_GET['transactionCode'])){
-
-		// Em caso de consulta ao retorno de uma transação é necessário estar logado.
-		$this->loginRequired(Flux::message('LoginToDonate'));
-
-   		// Transação originária do sistema de retorno.
-		$transaction = \PagSeguro\Services\Transactions\Search\Code::search($credentials->getAccountCredentials(), $_GET['transactionCode']);
-	} else {
-
-		// Transação originária do sistema de notificações.
-		$transaction = \PagSeguro\Services\Transactions\Notification::check($credentials->getAccountCredentials());
-	}
-
+   	// Transação originária do sistema de notificações.
+	$transaction = \PagSeguro\Services\Transactions\Notification::check($config->getAccountCredentials());
+	
 	// Isto é errado mas foi um mau necessário, não quero criar outra conexão com o banco de dados e não quero mecher no código nativo do Flux CP. Se alguem tiver uma ideia melhor me avise.
 	$database = new DB($server);
 
@@ -79,6 +71,10 @@ if (\PagSeguro\Helpers\Xhr::hasGet() || \PagSeguro\Helpers\Xhr::hasPost()){
 
 	// Atualizando transação no banco de dados.
 	$database->setPaymentUpdate();
+
+} else {
+		// Em caso de retorno de uma transação é necessário estar logado.
+		$this->loginRequired(Flux::message('LoginToDonate'));
 }
 	// Se você leu todos os comentários desse código e a documentação desta coisa você tem problemas amigo, se sou eu mesmo lendo anos depois... Boa sorte cara vai precisar.
 ?>

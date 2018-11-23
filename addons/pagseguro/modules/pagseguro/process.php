@@ -11,6 +11,7 @@ require_once Flux::config('PagSeguroLib');
 use \PagSeguro\Addon\Database as DB;
 
 if (\PagSeguro\Helpers\Xhr::hasPost()) {
+
 	$paymentTable = Flux::config('FluxTables.PaymentTable');
 	$rate         = Flux::config('rate');
 	$paymentPromo = Flux::config('Promotion');
@@ -55,8 +56,8 @@ if (\PagSeguro\Helpers\Xhr::hasPost()) {
 		// Isto é errado mas foi um mau necessário, não quero criar outra conexão com o banco de dados e não quero mecher no código nativo do Flux CP. Se alguem tiver uma ideia melhor me avise.
 		$database = new DB($server);
 
-		// Credenciais, não quero setar em um xml altamente inseguro.
-		$credentials = new \PagSeguro\Configuration\Configure();
+		// Configurações, não quero setar em um xml altamente inseguro.
+		$config = new \PagSeguro\Configuration\Configure();
 
 		// Instanciando um novo pagamento.
 		$payment = new \PagSeguro\Domains\Requests\Payment();
@@ -81,23 +82,20 @@ if (\PagSeguro\Helpers\Xhr::hasPost()) {
 		// Setando URL de notificações.
 		$payment->setNotificationURL($this->url('pagseguro', 'return', array('_host' => true)));
 
-		// Setando URL de retorno.
-		$payment->setRedirectURL($this->url('pagseguro', 'return', array('_host' => true)));
-
 		// Não me pergunte! Pergunte ao pagseguro o porque no exemplo da api deles eles enviam isto DUAS vezes através do método setNotificationURL e este aqui.
 		$payment->addParameter()->withArray(['notificationURL', $this->url('pagseguro', 'return', array('_host' => true))]);
-
-		// Não me pergunte! Pergunte ao pagseguro o porque no exemplo da api deles eles enviam isto DUAS vezes através do método setRedirectURL e este aqui.
-		$payment->addParameter()->withArray(['redirectURL', $this->url('pagseguro', 'return', array('_host' => true))]);
 
 		// Vamos lidar com isto com try catch e não deixar para o flux cp já que isto será usado numa chamada ajax. Logo é problema nosso.
 		try {
 
+			// Setando enviroment do pagseguro.
+			$config->setEnvironment(Flux::config('PagSeguroEnviroment'));
+
 			// Setando credenciais do pagseguro.
-			$credentials->setAccountCredentials(Flux::config('EmailPagSeguro'), Flux::config('TokenPagseguro'));
+			$config->setAccountCredentials(Flux::config('EmailPagSeguro'), Flux::config('PagSeguroEnviroment') == 'sandbox' ? Flux::config('TokenPagseguroSandbox') : Flux::config('TokenPagseguro'));
 
 			// Registrando transação com as credenciais.
-			$transaction = $payment->register($credentials->getAccountCredentials(), true);
+			$transaction = $payment->register($config->getAccountCredentials(), true);
 
 			// Preparando classe Database com parametros necessários para inserir transação no banco de dados.
 			$database->setNewPaymentParams($paymentAcc, $paymentUser, $paymentEmail, $paymentRef, $paymentIp, $paymentBy, $paymentVal, $paymentTable);
