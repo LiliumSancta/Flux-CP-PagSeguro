@@ -82,8 +82,14 @@ if (\PagSeguro\Helpers\Xhr::hasPost()) {
 		// Setando URL de notificações.
 		$payment->setNotificationURL($this->url('pagseguro', 'return', array('_host' => true)));
 
+		// Setando URL de retorno.
+		$payment->setRedirectURL($this->url('pagseguro', 'return', array('_host' => true)));
+
 		// Não me pergunte! Pergunte ao pagseguro o porque no exemplo da api deles eles enviam isto DUAS vezes através do método setNotificationURL e este aqui.
 		$payment->addParameter()->withArray(['notificationURL', $this->url('pagseguro', 'return', array('_host' => true))]);
+
+		// Não me pergunte! Pergunte ao pagseguro o porque no exemplo da api deles eles enviam isto DUAS vezes através do método setRedirectURL e este aqui.
+		$payment->addParameter()->withArray(['redirectURL', $this->url('pagseguro', 'return', array('_host' => true))]);
 
 		// Vamos lidar com isto com try catch e não deixar para o flux cp já que isto será usado numa chamada ajax. Logo é problema nosso.
 		try {

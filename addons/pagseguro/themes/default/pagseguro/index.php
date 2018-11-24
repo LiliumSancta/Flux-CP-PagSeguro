@@ -20,7 +20,7 @@
 						isOpenLightbox = PagSeguroLightbox(data.code,{
 							success: function(transactionCode){
 								// Isto aqui não foi muito legal =P.
-								location.href="<?php echo $this->url($params->get('module'), 'return') ?>";
+								location.href="<?php echo $this->url($params->get('module'), 'return', array('transactionCode' => '')) ?>"+transactionCode;
 							},
 							abort: function(){
 								$('.red').empty();

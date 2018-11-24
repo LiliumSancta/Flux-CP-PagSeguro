@@ -10,7 +10,7 @@ require_once Flux::config('PagSeguroLib');
 use \PagSeguro\Addon\Payment as DB;
 
 // Queria unificar as páginas de retorno e notificações reduzindo ao maximo código repetido e deu nisso ai =P.
-if (!empty($_POST) && \PagSeguro\Helpers\Xhr::hasPost()){
+if (\PagSeguro\Helpers\Xhr::hasGet() || \PagSeguro\Helpers\Xhr::hasPost()){
 
 	$paymentTable = Flux::config('FluxTables.PaymentTable');
 	$banTable     = Flux::config('FluxTables.AccountBanTable');
@@ -30,8 +30,19 @@ if (!empty($_POST) && \PagSeguro\Helpers\Xhr::hasPost()){
 	// Setando credenciais do pagseguro.
    	$config->setAccountCredentials(Flux::config('EmailPagSeguro'), Flux::config('PagSeguroEnviroment') == 'sandbox' ? Flux::config('TokenPagseguroSandbox') : Flux::config('TokenPagseguro'));
 
-   	// Transação originária do sistema de notificações.
-	$transaction = \PagSeguro\Services\Transactions\Notification::check($config->getAccountCredentials());
+   	// Queria unificar as páginas de retorno e notificações reduzindo ao maximo código repetido e deu nisso ai =P.
+	if (!empty($_GET['transactionCode'])){
+
+		// Em caso de consulta ao retorno de uma transação é necessário estar logado.
+		$this->loginRequired(Flux::message('LoginToDonate'));
+
+   		// Transação originária do sistema de retorno.
+		$transaction = \PagSeguro\Services\Transactions\Search\Code::search($config->getAccountCredentials(), $_GET['transactionCode']);
+	} else {
+		
+		// Transação originária do sistema de notificações.
+		$transaction = \PagSeguro\Services\Transactions\Notification::check($config->getAccountCredentials());
+	}
 	
 	// Isto é errado mas foi um mau necessário, não quero criar outra conexão com o banco de dados e não quero mecher no código nativo do Flux CP. Se alguem tiver uma ideia melhor me avise.
 	$database = new DB($server);
@@ -52,29 +63,26 @@ if (!empty($_POST) && \PagSeguro\Helpers\Xhr::hasPost()){
 	$payment = $database->getPayment();
 
 	// Status no banco de dados igual ao recebido do PagSeguro, então morra Flux CP!
-	if ($paymentStatus == $payment->payment_status)
-		die;
+	if ($paymentStatus != $payment->payment_status){
 
-	// Preparando atualização da transação no banco de dados com os dados recebido do PagSeguro.
-	$database->setNewUpdate(
-		$payment->account_id,
-		$payment->payment,
-		$paymentCode,
-		$paymentStatus,
-		$paymentVar,
-		$initPromo,
-		$paymentPromo,
-		$paymentFlux,
-		$emulator,
-		$rate
-	);
+		// Preparando atualização da transação no banco de dados com os dados recebido do PagSeguro.
+		$database->setNewUpdate(
+			$payment->account_id,
+			$payment->payment,
+			$paymentCode,
+			$paymentStatus,
+			$paymentVar,
+			$initPromo,
+			$paymentPromo,
+			$paymentFlux,
+			$emulator,
+			$rate
+		);
 
-	// Atualizando transação no banco de dados.
-	$database->setPaymentUpdate();
+		// Atualizando transação no banco de dados.
+		$database->setPaymentUpdate();
 
-} else {
-		// Em caso de retorno de uma transação é necessário estar logado.
-		$this->loginRequired(Flux::message('LoginToDonate'));
+	} 
 }
 	// Se você leu todos os comentários desse código e a documentação desta coisa você tem problemas amigo, se sou eu mesmo lendo anos depois... Boa sorte cara vai precisar.
 ?>
