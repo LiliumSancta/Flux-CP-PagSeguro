@@ -46,10 +46,10 @@ if ($payment->payment_code){
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-	if (count($_POST) && !empty($_POST['transactionCode'])){
+	if (count($_POST) && !empty($_POST['transaction_id'])){
 
 		// Pegando dados da transação através do código de transação recebido no POST.
-		$transactionPagseguro = \PagSeguro\Services\Transactions\Search\Code::search($config->getAccountCredentials(), $_POST['transactionCode']);
+		$transactionPagseguro = \PagSeguro\Services\Transactions\Search\Code::search($config->getAccountCredentials(), $_POST['transaction_id']);
 
 		// Status no banco de dados igual ao recebido do PagSeguro, então GG paramos por aqui!
 		if ($transactionPagseguro->getStatus() != $payment->payment_status){
@@ -58,7 +58,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$database->setNewUpdate(
 				$payment->account_id,
 				$payment->payment,
-				$_POST['transactionCode'],
+				$_POST['transaction_id'],
 				$transactionPagseguro->getStatus(),
 				$paymentVar,
 				$initPromo,

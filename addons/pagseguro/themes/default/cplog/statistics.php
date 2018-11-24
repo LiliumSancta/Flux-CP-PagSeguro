@@ -134,25 +134,25 @@
 	<tr align="center">
 		<td>
 			<a href="<?php echo $this->url($params->get('module'), 'log', array('dateMin' => $dateMin, 'dateMax' => $dateMax, 'payment_status' => '1')) ?>">
-				<?php echo number_format((float)(($transactionsFail->total / $transactionsTotal->total) * 100),1, '.',''), PHP_EOL ?>%
+				<?php echo $transactionsFail->total ? number_format((float)(($transactionsFail->total / $transactionsTotal->total) * 100),1, '.','') : 0; ?>%
 			</a>
 		</td>
 		
 		<td>
 			<a href="<?php echo $this->url($params->get('module'), 'log', array('dateMin' => $dateMin, 'dateMax' => $dateMax, 'payment_status' => '2')) ?>">
-				<?php echo number_format((float)(($transactionsWaiting->total / $transactionsTotal->total) * 100),1, '.',''), PHP_EOL ?>%
+				<?php echo $transactionsWaiting->total ? number_format((float)(($transactionsWaiting->total / $transactionsTotal->total) * 100),1, '.','') : 0; ?>%
 			</a>
 		</td>
 		
 		<td>
 			<a href="<?php echo $this->url($params->get('module'), 'log', array('dateMin' => $dateMin, 'dateMax' => $dateMax, 'payment_status' => '3')) ?>">
-				<?php echo number_format((float)(($transactionsApproved->total / $transactionsTotal->total) * 100),1, '.',''), PHP_EOL ?>%
+				<?php echo $transactionsApproved->total ? number_format((float)(($transactionsApproved->total / $transactionsTotal->total) * 100),1, '.',''): 0; ?>%
 			</a>
 		</td>
 	
 		<td>
 			<a href="<?php echo $this->url($params->get('module'), 'log', array('dateMin' => $dateMin, 'dateMax' => $dateMax, 'payment_status' => '4')) ?>">
-				<?php echo number_format((float)(($transactionsDisapproved->total / $transactionsTotal->total) * 100),1, '.',''), PHP_EOL ?>%</td>
+				<?php echo $transactionsDisapproved->total ? number_format((float)(($transactionsDisapproved->total / $transactionsTotal->total) * 100),1, '.','') : 0; ?>%</td>
 			</a>
 		</td>
 		

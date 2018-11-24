@@ -4,15 +4,14 @@ if (!defined('FLUX_ROOT')) exit;
 $this->loginRequired();
 $title = 'Estatísticas do PagSeguro';
 
-if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['dateMin']) && !empty($_POST['dateMax']) || $_SERVER['REQUEST_METHOD'] == 'GET' && !empty($_GET['dateMin']) && !empty($_GET['dateMax'])){
-	if (count($_POST)){
+	if (empty($_POST)){
 	
-		$dateMin = $_POST['dateMin'];
-		$dateMax = $_POST['dateMax'];
+		$dateMin = '2000-01-01T01:00';
+		$dateMax = '2100-01-01T01:00';
 	} else {
 
-		$dateMin = $_GET['dateMin'];
-		$dateMax = $_GET['dateMax'];
+		$dateMin = $_POST['dateMin'];
+		$dateMax = $_POST['dateMax'];
 	}
 		
 		if (!preg_match('/^(\d{4}(-\d{2}){2})(T| )((([0-1]?[0-9])|([2][0-3])):)?(([0-5][0-9]))$/',$dateMin)){
@@ -66,5 +65,5 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['dateMin']) && !empty($
 		$transactionValueFail = $sth->fetch();
 		
 		}
-}
+
 ?>

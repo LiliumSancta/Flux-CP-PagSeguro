@@ -76,11 +76,13 @@ return array(
 
 	'PagSeguroLock' 		=> false, // Trancar sistema de doações? Caso você esteja realizando testes configure como true e somente GMs com lvl acima de 20 terão acesso.
 
+	'PagSeguroLightBox' 	=> true, // Utilizar a lightbox do pagseguro? (Padrão true), caso resolva não utilizar a lightbox irá redirecionar o cliente para uma página do PagSeguro para completar a transação.
+
 	'PagSeguroCurrency' 	=> 'BRL', // Moeda utilizada, é claro aqui é Brasil PORRA!
 
-	'PagSeguroAddress' 		=> 'false', // Requisitar o endereço do comprador? (Padrão false) OBS: precisa ser passado como string '-' vai entender.
+	'PagSeguroAddress' 		=> 'true', // Requisitar o endereço do comprador? (Padrão true) OBS: precisa ser passado como string e por algum motivo setando como false o nome do comprador não é enviado ao PagSeguro '-' vai entender.
 
-	'PagSeguroEnviroment' 	=> 'production', // Usar o sandbox do Pagseguro ? (Padrão production) production ou sandbox.
+	'PagSeguroEnviroment' 	=> 'production', // Usar o sandbox do Pagseguro? (Padrão production) production ou sandbox.
 
 	'PagSeguroSandBoxUrl' 	=> 'https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js', // URL do SandBox do PagSeguro.
 
@@ -99,7 +101,7 @@ return array(
 		),
 		'cplog' => array(
 			'log'       => 'Transações PagSeguro',
-			'statistics&dateMin=2000-01-01T01:00&dateMax=2050-01-01T01:00' => 'Estatísticas Pagseguro',
+			'statistics' => 'Estatísticas Pagseguro',
 			'about'           => 'Sobre o Addon PagSeguro',
 		),
 	),

@@ -31,13 +31,13 @@ if (\PagSeguro\Helpers\Xhr::hasGet() || \PagSeguro\Helpers\Xhr::hasPost()){
    	$config->setAccountCredentials(Flux::config('EmailPagSeguro'), Flux::config('PagSeguroEnviroment') == 'sandbox' ? Flux::config('TokenPagseguroSandbox') : Flux::config('TokenPagseguro'));
 
    	// Queria unificar as páginas de retorno e notificações reduzindo ao maximo código repetido e deu nisso ai =P.
-	if (!empty($_GET['transactionCode'])){
+	if (!empty($_GET['transaction_id'])){
 
 		// Em caso de consulta ao retorno de uma transação é necessário estar logado.
 		$this->loginRequired(Flux::message('LoginToDonate'));
 
    		// Transação originária do sistema de retorno.
-		$transaction = \PagSeguro\Services\Transactions\Search\Code::search($config->getAccountCredentials(), $_GET['transactionCode']);
+		$transaction = \PagSeguro\Services\Transactions\Search\Code::search($config->getAccountCredentials(), $_GET['transaction_id']);
 	} else {
 		
 		// Transação originária do sistema de notificações.

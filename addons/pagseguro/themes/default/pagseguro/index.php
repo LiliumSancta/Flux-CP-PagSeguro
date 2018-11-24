@@ -17,18 +17,30 @@
 						$('.red').append(data.msg).show();
 					}else{
 						$('.red').append(data.msg).hide();
-						isOpenLightbox = PagSeguroLightbox(data.code,{
-							success: function(transactionCode){
-								// Isto aqui não foi muito legal =P.
-								location.href="<?php echo $this->url($params->get('module'), 'return', array('transactionCode' => '')) ?>"+transactionCode;
-							},
-							abort: function(){
-								$('.red').empty();
-								$('.red').append('Doação Cancelada.').show();
+						if ("<?php echo Flux::config('PagSeguroLightBox'); ?>"){
+							isOpenLightbox = PagSeguroLightbox(data.code,{
+								success: function(transaction_id){
+									// Isto aqui não foi muito legal =P.
+									location.href="<?php echo $this->url($params->get('module'), 'return', array('transaction_id' => '')) ?>"+transaction_id;
+								},
+								abort: function(){
+									$('.red').empty();
+									$('.red').append('Doação Cancelada.').show();
+								}
+							});
+
+							// Isto não parece ser mais necessário, porém vou manter já que não ouve nenhum pronunciamento do PagSeguro.
+							if (!isOpenLightbox){
+								if ("<?php echo Flux::config('PagSeguroEnviroment') == 'sandbox'; ?>")
+									location.href="https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code="+data.code;
+								else
+									location.href="https://pagseguro.uol.com.br/v2/checkout/payment.html?code="+data.code;
 							}
-						});
-						if (!isOpenLightbox){
-							location.href="https://pagseguro.uol.com.br/v2/checkout/payment.html?code="+data.code;
+						}else {
+							if ("<?php echo Flux::config('PagSeguroEnviroment') == 'sandbox'; ?>")
+								location.href="https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code="+data.code;
+							else
+								location.href="https://pagseguro.uol.com.br/v2/checkout/payment.html?code="+data.code;
 						}
 					}
 				}

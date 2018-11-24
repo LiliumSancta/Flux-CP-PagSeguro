@@ -88,10 +88,10 @@ $sth->execute($bind);
 
 $paginator = $this->getPaginator($sth->fetch()->total);
 $paginator->setSortableColumns(array(
-	'id',
+	'id' => 'desc',
 	'account_id',
 	'payment_id',
-	'payment_date' => 'desc',
+	'payment_date',
 	'payment_status',
 	'payment'
 ));

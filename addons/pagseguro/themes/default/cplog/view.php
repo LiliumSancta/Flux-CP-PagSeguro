@@ -87,7 +87,7 @@
 		<table class="generic-form-table">
 				<tr>
 					<th><label for="numero">Código da Transação:</label></th>
-					<td><input type="text" name="transactionCode" id="transactionCode" value="<?php echo htmlspecialchars($payment->payment_code) ?>" size=39/></td>
+					<td><input type="text" name="transaction_id" id="transaction_id" value="<?php echo htmlspecialchars($payment->payment_code) ?>" size=39/></td>
 					<td>Coloque aqui o código da transação que quer solicitar o status manualmente.</td>
 				</tr>				
 				<tr>
